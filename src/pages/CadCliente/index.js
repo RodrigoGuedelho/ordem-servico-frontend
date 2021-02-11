@@ -1,7 +1,7 @@
 import React, {useState, useEffect, Fragment } from 'react';
 import ReactDOM from "react-dom";
 import { Container, Button, Form, Col, Row, Alert } from 'react-bootstrap';
-import {useParams} from 'react-router-dom';
+import {useParams, Link} from 'react-router-dom';
 import api from "../../services/api"
 
 
@@ -36,7 +36,19 @@ const  CadCliente = props => {
   }, [])
     
 
-   
+  function showMenssage(mensagem, tipoMensagem) {
+    setMessageAlert(mensagem);
+    setVariantAlert(tipoMensagem);
+    setShowAlert(true);
+  }
+
+  function exibirMensagem(status) {
+    if (status === 200 || status === 201) {
+      showMenssage("Operação realizada com sucesso.", "success");
+    } else {
+      showMenssage("Erro ao tenta salvar ou editar o cliente.", "danger");
+    }
+  }
   
 
   async function salvar() {
@@ -51,21 +63,12 @@ const  CadCliente = props => {
       }
       );
 
-      if (response.status === 200 || response.status === 201) {
-        setMessageAlert("Cliente cadastrado com sucesso." );
-        setVariantAlert("success");
-      } else {
-        setMessageAlert("Erro ao tenta salvar o cliente.");
-        setVariantAlert("error");
-      }
+      exibirMensagem(response.status);
       
-      setShowAlert(true);
       limparCampos();
       
     } catch (error) {
-      setMessageAlert("Erro  ao salvar um cliente.");
-      setVariantAlert("danger");
-      setShowAlert(true)
+     showMenssage("Erro ao cadastrar cliente.", "danger");
     }
   }
 
@@ -81,20 +84,10 @@ const  CadCliente = props => {
       }
       );
 
-      if (response.status === 200 || response.status === 201) {
-        setMessageAlert("Cliente editado com sucesso." );
-        setVariantAlert("success");
-      } else {
-        setMessageAlert("Erro ao tenta editar o cliente.");
-        setVariantAlert("error");
-      }
-      
-      setShowAlert(true);
+      exibirMensagem(response.status);
       
     } catch (error) {
-      setMessageAlert("Erro  ao salvar um cliente.");
-      setVariantAlert("danger");
-      setShowAlert(true)
+      showMenssage("Erro ao editar cliente.", "danger");
     }
   }
 
@@ -158,9 +151,15 @@ const  CadCliente = props => {
           </Col>
         </Row>
 
-        <Row md={2} >
-          <Col>
+        <Row md={1} >
+          <Col md={1}>
             <Button variant="success" type="submit" style={{marginRight: '5px' }}>Salvar</Button>
+            
+          </Col> 
+          <Col md={1}>
+            <Link className="btn btn-primary"  variant="primary" to="/clientes" >
+              Voltar
+            </Link>
             
           </Col>
         </Row>

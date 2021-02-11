@@ -3,11 +3,13 @@ import React, {useState, useEffect, Fragment } from "react";
 import {Table, Button, Form, Row, Col, Container} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import api from "../../services/api";
-import { FiEdit, FiPlus, FiSearch} from 'react-icons/fi'
+import { FiEdit, FiPlus, FiSearch} from 'react-icons/fi';
+import ButtonDelete from  "../../components/ButtonDelete";
 
 function Clientes() {
   const [clientes, setClientes] = useState([]);
   const [filtroNome, setFiltroNome] = useState("");
+
 
   async function pesquisar() {
     try {
@@ -52,6 +54,7 @@ function Clientes() {
             <Button variant="success" type="button" onClick={pesquisar} style={{marginRight: '5px' }}>
               <FiSearch size={18} color= "#fff" />
             </Button>
+            
           </Col>
         </Row> 
 
@@ -73,7 +76,10 @@ function Clientes() {
                     <center> 
                       <Button variant="success" href={"/cadastro-clientes/" + cliente.id} style={{marginRight: "5px"}}>
                         <FiEdit size={18} color= "#fff" />
-                      </Button> 
+                      </Button>
+
+                      <ButtonDelete  urlRequest="/clientes/" idVariavel={cliente.id} />
+                      
                     </center>
                   </td>
                   <td>{cliente.id}</td>
