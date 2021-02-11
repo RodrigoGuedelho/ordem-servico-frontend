@@ -1,8 +1,9 @@
 import './style.css';
 import React, {useState, useEffect, Fragment } from "react";
 import {Table, Button, Form, Row, Col, Container} from 'react-bootstrap';
-import {Link} from 'react-router-dom'
-import api from "../../services/api"
+import {Link} from 'react-router-dom';
+import api from "../../services/api";
+import { FiEdit, FiPlus, FiSearch} from 'react-icons/fi'
 
 function Clientes() {
   const [clientes, setClientes] = useState([]);
@@ -26,10 +27,14 @@ function Clientes() {
     <Fragment>
       <Container>
           <br/>  <br/>
+          <center>
+            <h1>Pesquisar Clientes</h1>
+          </center>
+          <br/>  <br/>
           <Row md={2}>
             <Col>
               <Link className="btn btn-primary"  variant="primary" to="/cadastro-clientes" >
-                Cadastrar
+                <FiPlus size={18} color= "#fff" />
               </Link>
               
             </Col>    
@@ -38,13 +43,15 @@ function Clientes() {
         <Row md={2}>
           <Col md={3}>
             <Form.Group controlId="nome" >
-              <Form.Control  type="text"  name="pesquisa" placeholder="Buscar " 
+              <Form.Control  type="text"  name="nome" placeholder="Nome " 
                   onChange={e => setFiltroNome(e.target.value)}  />
             </Form.Group>
           </Col>
 
           <Col md={1}>
-            <Button variant="success" type="button" onClick={pesquisar} style={{marginRight: '5px' }}>Salvar</Button>
+            <Button variant="success" type="button" onClick={pesquisar} style={{marginRight: '5px' }}>
+              <FiSearch size={18} color= "#fff" />
+            </Button>
           </Col>
         </Row> 
 
@@ -63,8 +70,10 @@ function Clientes() {
               {clientes.map(cliente => 
                 <tr>
                   <td>
-                    <center>
-                      nenhuma    
+                    <center> 
+                      <Button variant="success" href={"/cadastro-clientes/" + cliente.id} style={{marginRight: "5px"}}>
+                        <FiEdit size={18} color= "#fff" />
+                      </Button> 
                     </center>
                   </td>
                   <td>{cliente.id}</td>

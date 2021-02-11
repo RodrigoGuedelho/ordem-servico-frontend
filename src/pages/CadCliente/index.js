@@ -1,15 +1,43 @@
 import React, {useState, useEffect, Fragment } from 'react';
+import ReactDOM from "react-dom";
 import { Container, Button, Form, Col, Row, Alert } from 'react-bootstrap';
+import {useParams} from 'react-router-dom';
 import api from "../../services/api"
 
-function CadCliente() {
+
+
+const  CadCliente = props => {
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [telefone, setTelefone] = useState('');
   const [showAlert, setShowAlert] = useState(false);
   const [variantAlert, setVariantAlert] = useState('');
   const [messageAlert, setMessageAlert] = useState('');
+  const [idCliente, setIdCliente] = useState(0);
+  const {match} = props;
+  const {id} = match.params;
+  
+  
+   useEffect(async () => {
+    
+   
+    if(id !== undefined){
+      const response = await api.get("clientes/" + id) 
+      const cliente  = response.data
+        setIdCliente(cliente.id);
+        setNome(String(cliente.nome));
+        setEmail(cliente.email);
+        setTelefone(cliente.telefone);
+    }
+   
+    /*api.get('/ddd/search/all').then(response =>{
+      
+    });*/
+  }, [])
+    
 
+   
+  
 
   async function salvar() {
     var response = '';
@@ -22,10 +50,9 @@ function CadCliente() {
         telefone: telefone,
       }
       );
-      console.log(response);
 
       if (response.status === 200 || response.status === 201) {
-        setMessageAlert("Cliente cadastrado com sucesso.");
+        setMessageAlert("Cliente cadastrado com sucesso." );
         setVariantAlert("success");
       } else {
         setMessageAlert("Erro ao tenta salvar o cliente.");
@@ -42,6 +69,35 @@ function CadCliente() {
     }
   }
 
+  async function editar() {
+    var response = '';
+    try {
+
+      response = await api.put("/clientes/" + id,
+      {
+        nome: nome,
+        email: email,
+        telefone: telefone,
+      }
+      );
+
+      if (response.status === 200 || response.status === 201) {
+        setMessageAlert("Cliente editado com sucesso." );
+        setVariantAlert("success");
+      } else {
+        setMessageAlert("Erro ao tenta editar o cliente.");
+        setVariantAlert("error");
+      }
+      
+      setShowAlert(true);
+      
+    } catch (error) {
+      setMessageAlert("Erro  ao salvar um cliente.");
+      setVariantAlert("danger");
+      setShowAlert(true)
+    }
+  }
+
   function limparCampos() {
     setNome("");
     setEmail("");
@@ -50,8 +106,11 @@ function CadCliente() {
 
   async function handleOnSubmit (e) {
     e.preventDefault();
-    salvar();  
-   
+    if (id !== undefined) {
+      editar();
+    } else {
+      salvar();  
+    } 
   } 
 
   return (
@@ -70,7 +129,7 @@ function CadCliente() {
                 <Form.Label>Nome:</Form.Label>
           
                 <Form.Control type="text" placeholder="Nome" value={nome}
-                    onChange={e => setNome(e.target.value)} required={true} 
+                    onChange={e => setNome(e.target.value)}   required={true} 
                       minLength={8} maxLength={80} />         
               </Form.Group>
             </Col>
