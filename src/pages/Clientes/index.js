@@ -33,7 +33,7 @@ function Clientes() {
     return (
         <React.Fragment>
             <center>
-              <Link className="btn btn-success" href={"/cadastro-clientes/" + cliente.id} style={{marginRight: "5px"}}>
+              <Link className="btn btn-success" to={"/cadastro-clientes/" + cliente.id} style={{marginRight: "5px"}}>
                 <FiEdit size={18} color= "#fff" />
               </Link>
 
