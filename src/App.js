@@ -6,7 +6,7 @@ import  Router from './routes'
 function App(props) {
   return (
     <div className="App">
-     <NavBar />
+      <NavBar />
       <Router />
       <Footer />
     </div>

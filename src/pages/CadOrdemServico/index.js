@@ -2,23 +2,23 @@ import React, {useState, useEffect, Fragment } from 'react';
 import ReactDOM from "react-dom";
 import { Container, Button, Form, Col, Row, Alert } from 'react-bootstrap';
 import {useParams, Link} from 'react-router-dom';
-import api from "../../services/api";
+import api from "../../services/api"
 
-import { Panel } from 'primereact/panel';
 
-const  CadCliente = props => {
-  const [nome, setNome] = useState('');
-  const [email, setEmail] = useState('');
-  const [telefone, setTelefone] = useState('');
+
+const  CadOrdemServico = props => {
+  const [descricao, setDescricao] = useState('');
+  const [cliente, setCliente] = useState({});
+  const [preco, setPreco] = useState(0.00);
   const [showAlert, setShowAlert] = useState(false);
   const [variantAlert, setVariantAlert] = useState('');
   const [messageAlert, setMessageAlert] = useState('');
-  const [idCliente, setIdCliente] = useState(0);
+  const [idOrdem, setIdOrdem] = useState(0);
   const {match} = props;
   const {id} = match.params;
   
   
-   useEffect(async () => {
+   /*useEffect(async () => {
     if(id !== undefined){
       const response = await api.get("clientes/" + id) 
       const cliente  = response.data
@@ -27,7 +27,11 @@ const  CadCliente = props => {
         setEmail(cliente.email);
         setTelefone(cliente.telefone);
     }
-  }, [])
+   
+    /*api.get('/ddd/search/all').then(response =>{
+      
+    });*/
+  //}, [])
     
 
   function showMenssage(mensagem, tipoMensagem) {
@@ -105,65 +109,63 @@ const  CadCliente = props => {
       <br />
       <Container>
       <center><h1>Cadastro de Cliente:</h1></center>
-      <Panel header="Clientes">
-        <Alert variant={variantAlert} show={showAlert}>
-              {messageAlert}
-            </Alert>
-        <Form onSubmit={handleOnSubmit}>
-          <Row md={2}>
-              <Col>           
-                <Form.Group controlId="nome" >
-                  <Form.Label>Nome:</Form.Label>
-            
-                  <Form.Control type="text" placeholder="Nome" value={nome}
-                      onChange={e => setNome(e.target.value)}   required={true} 
-                        minLength={8} maxLength={80} />         
-                </Form.Group>
-              </Col>
-          </Row>
-
-          <Row md={2}>
-              <Col>
-                <Form.Group controlId="email" >
-                  <Form.Label>Email:</Form.Label>
-                  <Form.Control type="text" placeholder="Email" value={email}
-                      onChange={e => setEmail(e.target.value)} required={true} 
-                        minLength={8} maxLength={80} />     
-                </Form.Group>
-              </Col>
-          </Row>
-
-          <Row md={2}>
+      
+      <Alert variant={variantAlert} show={showAlert}>
+            {messageAlert}
+          </Alert>
+      <Form onSubmit={handleOnSubmit}>
+        <Row md={2}>
             <Col>
-              <Form.Group controlId="telefone" >
-                <Form.Label>Telefone:</Form.Label>
+              <Form.Group controlId="nome" >
+                <Form.Label>Nome:</Form.Label>
           
-                <Form.Control type="text" placeholder="Telefone" value={telefone}
-                    onChange={e => setTelefone(e.target.value)} required={true} 
-                      minLength={8} maxLength={80} />
+                <Form.Control type="text" placeholder="Nome" value={nome}
+                    onChange={e => setNome(e.target.value)}   required={true} 
+                      minLength={8} maxLength={80} />         
               </Form.Group>
             </Col>
-          </Row>
+        </Row>
 
-          <Row md={1} >
-            <Col md={1}>
-              <Button variant="success" type="submit" style={{marginRight: '5px' }}>Salvar</Button>
-              
-            </Col> 
-            <Col md={1}>
-              <Link className="btn btn-primary"  variant="primary" to="/clientes" >
-                Voltar
-              </Link>
-              
+        <Row md={2}>
+            <Col>
+              <Form.Group controlId="email" >
+                <Form.Label>Email:</Form.Label>
+                <Form.Control type="text" placeholder="Email" value={email}
+                    onChange={e => setEmail(e.target.value)} required={true} 
+                      minLength={8} maxLength={80} />     
+              </Form.Group>
             </Col>
-          </Row>
-          
-        </Form>
-      </Panel>
-      
+        </Row>
+
+        <Row md={2}>
+          <Col>
+            <Form.Group controlId="telefone" >
+              <Form.Label>Telefone:</Form.Label>
+        
+              <Form.Control type="text" placeholder="Telefone" value={telefone}
+                  onChange={e => setTelefone(e.target.value)} required={true} 
+                    minLength={8} maxLength={80} />
+            </Form.Group>
+          </Col>
+        </Row>
+
+        <Row md={1} >
+          <Col md={1}>
+            <Button variant="success" type="submit" style={{marginRight: '5px' }}>Salvar</Button>
+            
+          </Col> 
+          <Col md={1}>
+            <Link className="btn btn-primary"  variant="primary" to="/clientes" >
+              Voltar
+            </Link>
+            
+          </Col>
+        </Row>
+        
+      </Form>
       </Container>
     </Fragment>
   )
 }
 
-export default CadCliente;
+export default CadOrdemServico;

@@ -1,10 +1,14 @@
 import './style.css';
 import React, {useState, useEffect, Fragment } from "react";
-import {Table, Button, Form, Row, Col, Container} from 'react-bootstrap';
+import { Form, Row, Col, Container} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import api from "../../services/api";
 import { FiEdit, FiPlus, FiSearch} from 'react-icons/fi';
 import ButtonDelete from  "../../components/ButtonDelete";
+import { Button } from 'primereact/button';
+
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
 
 function Clientes() {
   const [clientes, setClientes] = useState([]);
@@ -25,6 +29,20 @@ function Clientes() {
     }
   }
 
+  const actionBodyTemplate = (cliente) => {
+    return (
+        <React.Fragment>
+            <center>
+              <Link className="btn btn-success" href={"/cadastro-clientes/" + cliente.id} style={{marginRight: "5px"}}>
+                <FiEdit size={18} color= "#fff" />
+              </Link>
+
+              <ButtonDelete  urlRequest="/clientes/" idVariavel={cliente.id} />
+            </center>
+        </React.Fragment>
+    );
+}
+
   return (
     <Fragment>
       <Container>
@@ -35,7 +53,7 @@ function Clientes() {
           <br/>  <br/>
           <Row md={2}>
             <Col>
-              <Link className="btn btn-primary"  variant="primary" to="/cadastro-clientes" >
+              <Link className="p-button p-component"  variant="primary" to="/cadastro-clientes" >
                 <FiPlus size={18} color= "#fff" />
               </Link>
               
@@ -57,40 +75,21 @@ function Clientes() {
             
           </Col>
         </Row> 
-
-        <Table striped bordered hover size="sm">
-            <thead>
-              <tr>
-                <th>Ações</th>
-                <th>Id</th>
-                <th>Nome</th>
-                <th>Email</th>
-                <th>Telefone</th>
-                
-              </tr>
-            </thead>
-            <tbody>
-              {clientes.map(cliente => 
-                <tr>
-                  <td>
-                    <center> 
-                      <Button variant="success" href={"/cadastro-clientes/" + cliente.id} style={{marginRight: "5px"}}>
-                        <FiEdit size={18} color= "#fff" />
-                      </Button>
-
-                      <ButtonDelete  urlRequest="/clientes/" idVariavel={cliente.id} />
-                      
-                    </center>
-                  </td>
-                  <td>{cliente.id}</td>
-                  <td>{cliente.nome}</td>
-                  <td>{cliente.email}</td>
-                  <td>{cliente.telefone}</td>
-                  
-                </tr>
-              )}       
-            </tbody>
-          </Table>
+        
+        <div className="card">
+                <DataTable value={clientes} paginator variant="cliente"
+                paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
+                rows={10} rowsPerPageOptions={[10,20,50]}>
+                    <Column header="Ações">
+                   
+                    </Column>
+                    <Column field="id" header="Id"></Column>
+                    <Column field="nome" header="Nome"></Column>
+                    <Column field="email" header="Email"></Column>
+                    <Column field="telefone" header="Telefone"></Column>
+                    <Column body={actionBodyTemplate}></Column>
+                </DataTable>
+            </div>
       </Container>
       
     </Fragment>
