@@ -80,14 +80,12 @@ function Clientes() {
                 <DataTable value={clientes} paginator variant="cliente"
                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
                 rows={10} rowsPerPageOptions={[10,20,50]}>
-                    <Column header="Ações">
-                   
-                    </Column>
+                    <Column header="Ações"  body={actionBodyTemplate}></Column>
                     <Column field="id" header="Id"></Column>
                     <Column field="nome" header="Nome"></Column>
                     <Column field="email" header="Email"></Column>
                     <Column field="telefone" header="Telefone"></Column>
-                    <Column body={actionBodyTemplate}></Column>
+                   
                 </DataTable>
             </div>
       </Container>
