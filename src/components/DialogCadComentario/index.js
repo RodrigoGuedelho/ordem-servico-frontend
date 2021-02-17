@@ -1,4 +1,4 @@
-import React, {Fragment, useState, useRef} from "react";
+import React, {Fragment, useState, useEffect, useRef} from "react";
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { InputTextarea } from 'primereact/inputtextarea';
@@ -12,6 +12,8 @@ const DialogCadComentario = props => {
   const [comentario, setComentario] = useState("");
   
   const toast = useRef(null);
+
+
 
   function showMenssage(mensagem, tipoMensagem) { 
     toast.current.show({severity: tipoMensagem, summary: mensagem, detail:'', life: 3000});

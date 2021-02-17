@@ -5,7 +5,8 @@ import {Link} from 'react-router-dom';
 import api from "../../services/api";
 import { FiEdit, FiPlus, FiSearch, FiUsers, FiMessageSquare} from 'react-icons/fi';
 import ButtonDelete from  "../../components/ButtonDelete";
-import DialogCadComentario from "../../components/DialogCadComentario"
+import DialogCadComentario from "../../components/DialogCadComentario";
+import DialogComentarios from "../../components/DialogComentarios"
 
 import { Button } from 'primereact/button';
 
@@ -25,7 +26,8 @@ function OrdensServico() {
   const [idOrdemAux, setIddOrdemAux] = useState(0);
 
   const [dialogCadComentario, setDialogCadComentario] = useState(false);
-
+  const [dialogComentarios,  setDialogComentarios] = useState(false);
+  const [comentarios, setComentarios] = useState([]);
 
 
   async function pesquisar() {
@@ -68,6 +70,21 @@ function OrdensServico() {
       setIddOrdemAux(id);
       setDialogCadComentario(true);
     }
+    
+    const showDialogComentarios  = async (id)  => {
+      if(id !== undefined){
+        const response = await api.get("ordens-servico/" + id + "/comentario/") 
+        const comentariosAux  = response.data
+  
+        if  (comentariosAux !== undefined && comentariosAux !== null) {
+          setComentarios(comentariosAux);
+        } else {
+          setComentarios([]);
+        }
+      }
+      setIddOrdemAux(id);
+      setDialogComentarios(true);
+    }
 
     return (
         <React.Fragment>
@@ -79,9 +96,13 @@ function OrdensServico() {
               <ButtonDelete  urlRequest="/ordens-servico/" idVariavel={ordem.id} />
 
               <button class="btn btn-primary btn-margin-left" onClick={(e) => showDialogCadComentario(ordem.id)} >
-                <FiMessageSquare size={18} color= "#fff" />
+                <FiPlus size={18} color= "#fff" />
               </button>
-              <DialogCadComentario id={"dgCadComentario"+ ordem.id} nome="dialogCadComentario" visivel={dialogCadComentario} setVisivel={setDialogCadComentario} ordemId={idOrdemAux} />          
+              <DialogCadComentario id={"dgCadComentario"} nome="dialogCadComentario" visivel={dialogCadComentario} setVisivel={setDialogCadComentario} ordemId={idOrdemAux} />          
+              <button class="btn btn-primary btn-margin-left" onClick={(e) => showDialogComentarios(ordem.id)} >
+                <FiMessageSquare size={18} color= "#fff" />
+              </button> 
+              <DialogComentarios comentarios={comentarios}  ordemId={idOrdemAux} visivel={dialogComentarios} setVisivel={setDialogComentarios} />              
             </center>
         </React.Fragment>
     );
