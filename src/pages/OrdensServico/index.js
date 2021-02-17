@@ -3,8 +3,10 @@ import React, {useState, Fragment } from "react";
 import { Form, Row, Col, Container} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import api from "../../services/api";
-import { FiEdit, FiPlus, FiSearch, FiUsers} from 'react-icons/fi';
+import { FiEdit, FiPlus, FiSearch, FiUsers, FiMessageSquare} from 'react-icons/fi';
 import ButtonDelete from  "../../components/ButtonDelete";
+import DialogCadComentario from "../../components/DialogCadComentario"
+
 import { Button } from 'primereact/button';
 
 import { DataTable } from 'primereact/datatable';
@@ -20,6 +22,11 @@ function OrdensServico() {
   const [filtroCliente, setFiltroCliente] = useState(null);
   const [clientes, setClientes] = useState([]);
   const listStatus = ["ABERTO", "FINALIZADA", "CANCELADA"];
+  const [idOrdemAux, setIddOrdemAux] = useState(0);
+
+  const [dialogCadComentario, setDialogCadComentario] = useState(false);
+
+
 
   async function pesquisar() {
     try {
@@ -55,7 +62,13 @@ function OrdensServico() {
     
   }
 
+
   const actionBodyTemplate = (ordem) => {
+    const  showDialogCadComentario = (id) => {
+      setIddOrdemAux(id);
+      setDialogCadComentario(true);
+    }
+
     return (
         <React.Fragment>
             <center>
@@ -64,11 +77,17 @@ function OrdensServico() {
               </Link>
 
               <ButtonDelete  urlRequest="/ordens-servico/" idVariavel={ordem.id} />
+
+              <button class="btn btn-primary btn-margin-left" onClick={(e) => showDialogCadComentario(ordem.id)} >
+                <FiMessageSquare size={18} color= "#fff" />
+              </button>
+              <DialogCadComentario id={"dgCadComentario"+ ordem.id} nome="dialogCadComentario" visivel={dialogCadComentario} setVisivel={setDialogCadComentario} ordemId={idOrdemAux} />          
             </center>
         </React.Fragment>
     );
 }
 
+  
   return (
     <Fragment>
       <Container>

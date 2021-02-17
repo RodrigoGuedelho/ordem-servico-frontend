@@ -7,7 +7,7 @@ import {Navbar} from 'react-bootstrap'
 
     return (   
       <Navbar  bg="dark" variant="dark">
-        <Navbar.Brand href="/"><br/></Navbar.Brand>
+        <Navbar.Brand href="/">Início</Navbar.Brand>
       </Navbar> 
     );
 };

@@ -12,7 +12,7 @@ export default function Routes(props) {
 
     <BrowserRouter>
       <Switch>
-      <Route path="/" component={OrdensServico} exact/>
+        <Route path="/" component={OrdensServico} exact/>
         <Route path="/clientes" component={Clientes} />
        
         <Route path="/cadastro-clientes/:id" component={CadCliente} exact/>   
